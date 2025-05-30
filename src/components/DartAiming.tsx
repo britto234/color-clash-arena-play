@@ -22,7 +22,7 @@ const DartAiming: React.FC<DartAimingProps> = ({ onThrow, disabled }) => {
     const interval = setInterval(() => {
       if (aimingPhase === 'horizontal') {
         setHorizontalPosition(prev => {
-          let newPos = prev + (direction.horizontal * 2);
+          let newPos = prev + (direction.horizontal * 1.5);
           if (newPos >= 95 || newPos <= 5) {
             setDirection(d => ({ ...d, horizontal: -d.horizontal }));
             newPos = Math.max(5, Math.min(95, newPos));
@@ -31,7 +31,7 @@ const DartAiming: React.FC<DartAimingProps> = ({ onThrow, disabled }) => {
         });
       } else if (aimingPhase === 'vertical') {
         setVerticalPosition(prev => {
-          let newPos = prev + (direction.vertical * 2);
+          let newPos = prev + (direction.vertical * 1.5);
           if (newPos >= 95 || newPos <= 5) {
             setDirection(d => ({ ...d, vertical: -d.vertical }));
             newPos = Math.max(5, Math.min(95, newPos));
@@ -39,7 +39,7 @@ const DartAiming: React.FC<DartAimingProps> = ({ onThrow, disabled }) => {
           return newPos;
         });
       }
-    }, 40);
+    }, 50);
 
     return () => clearInterval(interval);
   }, [aimingPhase, isMoving, disabled, direction]);
@@ -130,13 +130,13 @@ const DartAiming: React.FC<DartAimingProps> = ({ onThrow, disabled }) => {
             {/* Triple ring */}
             <div className="absolute inset-8 rounded-full border-4 border-green-400/50">
               {/* Inner scoring area */}
-              <div className="absolute inset-12 rounded-full bg-gradient-to-br from-red-500 to-red-700">
-                {/* Bull ring */}
-                <div className="absolute inset-8 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center relative shadow-lg">
-                  <div className="absolute text-white font-bold text-sm top-2 bg-black/50 rounded px-1">25</div>
-                  {/* Bull's eye */}
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-sm">50</span>
+              <div className="absolute inset-12 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                {/* Bull ring - properly centered */}
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center relative shadow-lg">
+                  <div className="absolute text-white font-bold text-sm -top-5 bg-black/50 rounded px-1">25</div>
+                  {/* Bull's eye - properly centered */}
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-xs">50</span>
                   </div>
                 </div>
               </div>
@@ -187,7 +187,7 @@ const DartAiming: React.FC<DartAimingProps> = ({ onThrow, disabled }) => {
           />
         </div>
 
-        {/* Dart Arrow */}
+        {/* Thicker Dart Arrow */}
         <div 
           className={`absolute transition-all duration-300 ${isThrown ? 'z-20' : 'z-10'}`}
           style={{ 
@@ -197,17 +197,19 @@ const DartAiming: React.FC<DartAimingProps> = ({ onThrow, disabled }) => {
           }}
         >
           <div className="relative">
-            {/* Dart shaft */}
-            <div className="w-1 h-12 bg-gradient-to-t from-yellow-600 to-yellow-400 mx-auto"></div>
-            {/* Dart point */}
-            <div className="w-0.5 h-4 bg-gradient-to-t from-gray-400 to-gray-200 mx-auto -mt-1"></div>
-            {/* Dart flights */}
-            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-              <div className="flex space-x-0.5">
-                <div className="w-2 h-3 bg-red-500 transform rotate-12"></div>
-                <div className="w-2 h-3 bg-red-500 transform -rotate-12"></div>
+            {/* Thicker dart shaft */}
+            <div className="w-2 h-16 bg-gradient-to-t from-yellow-600 to-yellow-400 mx-auto rounded-sm shadow-lg"></div>
+            {/* Thicker dart point */}
+            <div className="w-1 h-6 bg-gradient-to-t from-gray-400 to-gray-200 mx-auto -mt-1 shadow-md"></div>
+            {/* Enhanced dart flights */}
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+              <div className="flex space-x-1">
+                <div className="w-3 h-4 bg-gradient-to-r from-red-500 to-red-600 transform rotate-12 shadow-lg"></div>
+                <div className="w-3 h-4 bg-gradient-to-r from-red-500 to-red-600 transform -rotate-12 shadow-lg"></div>
               </div>
             </div>
+            {/* Dart grip */}
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-3 h-8 bg-gradient-to-t from-gray-600 to-gray-400 rounded-sm shadow-inner"></div>
           </div>
         </div>
 
