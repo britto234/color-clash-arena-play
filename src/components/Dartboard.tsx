@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import DartAiming from './DartAiming';
 
 interface DartboardProps {
   onScore: (points: number) => void;
@@ -7,6 +8,40 @@ interface DartboardProps {
 }
 
 const Dartboard: React.FC<DartboardProps> = ({ onScore, disabled }) => {
+  const [showAiming, setShowAiming] = useState(false);
+
+  const calculateScore = (horizontalPos: number, verticalPos: number) => {
+    // Convert percentage positions to coordinates relative to center (50, 50)
+    const centerX = 50;
+    const centerY = 50;
+    const distanceFromCenter = Math.sqrt(
+      Math.pow(horizontalPos - centerX, 2) + Math.pow(verticalPos - centerY, 2)
+    );
+
+    // Define scoring zones based on distance from center
+    if (distanceFromCenter <= 8) {
+      return 50; // Bull's eye
+    } else if (distanceFromCenter <= 12) {
+      return 25; // Inner bull
+    } else if (distanceFromCenter <= 20) {
+      return 20; // High score zone
+    } else if (distanceFromCenter <= 30) {
+      return 15; // Medium score zone
+    } else if (distanceFromCenter <= 40) {
+      return 10; // Low score zone
+    } else if (distanceFromCenter <= 45) {
+      return 5; // Edge zone
+    } else {
+      return 0; // Miss
+    }
+  };
+
+  const handleThrow = (horizontalPos: number, verticalPos: number) => {
+    const points = calculateScore(horizontalPos, verticalPos);
+    onScore(points);
+    setShowAiming(false);
+  };
+
   const scoreValues = [
     { label: 'Bull\'s Eye', value: 50, color: 'bg-red-500' },
     { label: 'Inner Bull', value: 25, color: 'bg-green-500' },
@@ -24,6 +59,10 @@ const Dartboard: React.FC<DartboardProps> = ({ onScore, disabled }) => {
     { label: '1', value: 1, color: 'bg-rose-500' },
     { label: 'Miss', value: 0, color: 'bg-gray-500' },
   ];
+
+  if (showAiming) {
+    return <DartAiming onThrow={handleThrow} disabled={disabled} />;
+  }
 
   return (
     <div className="flex flex-col items-center space-y-4">
@@ -53,6 +92,15 @@ const Dartboard: React.FC<DartboardProps> = ({ onScore, disabled }) => {
           ))}
         </div>
       </div>
+
+      {/* Aiming Mode Button */}
+      <button
+        onClick={() => setShowAiming(true)}
+        disabled={disabled}
+        className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105 active:scale-95"
+      >
+        🎯 AIM & THROW
+      </button>
 
       <div className="grid grid-cols-3 gap-2 w-full max-w-md">
         {scoreValues.map((score) => (
