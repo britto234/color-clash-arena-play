@@ -68,9 +68,34 @@ const Dartboard: React.FC<DartboardProps> = ({ onScore, disabled }) => {
     <div className="flex flex-col items-center space-y-4">
       <div className="relative w-80 h-80 rounded-full bg-gradient-to-br from-yellow-400 via-red-500 to-pink-500 p-2 shadow-2xl">
         <div className="w-full h-full rounded-full bg-black relative overflow-hidden">
-          {/* Dartboard rings */}
+          {/* Dartboard rings with numbers */}
           <div className="absolute inset-4 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+            {/* Outer ring with dartboard numbers */}
+            <div className="absolute inset-0 rounded-full">
+              {[20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5].map((number, index) => {
+                const angle = (index * 18) - 90; // 360/20 = 18 degrees per segment
+                const radius = 110; // Distance from center
+                const x = Math.cos(angle * Math.PI / 180) * radius;
+                const y = Math.sin(angle * Math.PI / 180) * radius;
+                
+                return (
+                  <div
+                    key={number}
+                    className="absolute text-white font-bold text-sm bg-black/50 rounded px-1"
+                    style={{
+                      left: `calc(50% + ${x}px)`,
+                      top: `calc(50% + ${y}px)`,
+                      transform: 'translate(-50%, -50%)',
+                    }}
+                  >
+                    {number}
+                  </div>
+                );
+              })}
+            </div>
+            
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center relative">
+              <div className="absolute text-white font-bold text-xs top-2 bg-black/50 rounded px-1">25</div>
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
                 <span className="text-white font-bold text-sm">50</span>
               </div>
