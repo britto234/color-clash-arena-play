@@ -121,10 +121,10 @@ const DartboardMesh3D = () => {
       </Cylinder>
       {/* Bull's eye labels */}
       <Text position={[0, -0.6, 0.16]} fontSize={0.15} color="white" anchorX="center" anchorY="middle">
-        25
+        {"25"}
       </Text>
       <Text position={[0, 0, 0.16]} fontSize={0.2} color="white" anchorX="center" anchorY="middle">
-        50
+        {"50"}
       </Text>
     </group>
   );

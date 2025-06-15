@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Cylinder } from '@react-three/drei';
@@ -88,7 +87,7 @@ const DartboardMesh = () => {
           anchorX="center"
           anchorY="middle"
         >
-          25
+          {"25"}
         </Text>
       </group>
       <group position={[0, 0, 0.16]}>
@@ -98,7 +97,7 @@ const DartboardMesh = () => {
           anchorX="center"
           anchorY="middle"
         >
-          50
+          {"50"}
         </Text>
       </group>
     </group>
