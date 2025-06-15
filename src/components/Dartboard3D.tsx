@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+// import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import DartAiming3D from './DartAiming3D';
 import DartboardCore from './DartboardCore';
@@ -74,10 +74,10 @@ const Dartboard3D: React.FC<Dartboard3DProps> = ({ onScore, disabled }) => {
           
           <DartboardMesh />
           
-          <OrbitControls 
+          {/* <OrbitControls 
             enableZoom={false} 
             enablePan={false}
-          />
+          /> */}
         </Canvas>
       </div>
 

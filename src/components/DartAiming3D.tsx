@@ -193,7 +193,6 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
             target={dartProps.target}
             onArrive={handleDartArrive}
           />
-          <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
         </Canvas>
         {!dartReleased && (
           <div
