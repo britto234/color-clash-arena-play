@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Text, Cylinder, Plane } from '@react-three/drei';
+import { Cylinder, Plane } from '@react-three/drei';
 import * as THREE from 'three';
 
 const DartboardCore = () => {
@@ -36,18 +37,6 @@ const DartboardCore = () => {
             <Plane args={[0.3, 1.2]} position={[Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0.13]} rotation={[0, 0, angle]}>
               <meshStandardMaterial color="#32CD32" />
             </Plane>
-
-            {/* Numbers */}
-            <group position={[Math.cos(angle) * 3.5, Math.sin(angle) * 3.5, 0.15]}>
-              <Text
-                fontSize={0.3}
-                color="white"
-                anchorX="center"
-                anchorY="middle"
-              >
-                {[20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5][i].toString()}
-              </Text>
-            </group>
           </group>
         );
       })}
@@ -60,28 +49,6 @@ const DartboardCore = () => {
       <Cylinder args={[0.4, 0.4, 0.06, 16]} position={[0, 0, 0.15]}>
         <meshStandardMaterial color="#DC143C" />
       </Cylinder>
-
-      {/* Bull's eye text */}
-      <group position={[0, -0.6, 0.16]}>
-        <Text
-          fontSize={0.15}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-        >
-          {"25"}
-        </Text>
-      </group>
-      <group position={[0, 0, 0.16]}>
-        <Text
-          fontSize={0.2}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-        >
-          {"50"}
-        </Text>
-      </group>
     </group>
   );
 };
