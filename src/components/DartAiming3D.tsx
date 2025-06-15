@@ -39,7 +39,8 @@ const DartArrow = ({
     }
   });
 
-  // NEVER spread {...props} to three.js components
+  // Make sure only allowed props are passed to Three.js components!
+  // Defensive checks: all props are literal, no spreads.
   return (
     <group
       ref={groupRef}
@@ -90,19 +91,16 @@ const DartboardMesh3D = () => {
               <planeGeometry args={[0.6, 1.5]} />
               <meshStandardMaterial attach="material" color={isRed ? "#DC143C" : "#000000"} />
             </mesh>
-
             {/* Double ring */}
             <mesh position={[Math.cos(angle) * 2.8, Math.sin(angle) * 2.8, 0.13]} rotation={[0, 0, angle]}>
               <planeGeometry args={[0.3, 1.2]} />
               <meshStandardMaterial attach="material" color="#FFD700" />
             </mesh>
-
             {/* Triple ring */}
             <mesh position={[Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0.13]} rotation={[0, 0, angle]}>
               <planeGeometry args={[0.3, 1.2]} />
               <meshStandardMaterial attach="material" color="#32CD32" />
             </mesh>
-
             {/* Numbers */}
             <Text
               position={[Math.cos(angle) * 3.5, Math.sin(angle) * 3.5, 0.15]}
