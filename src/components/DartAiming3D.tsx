@@ -238,7 +238,7 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
   return (
     <div className="relative flex flex-col items-center space-y-4">
       <div className="w-96 h-96 rounded-lg overflow-hidden shadow-2xl bg-slate-900 relative select-none">
-        <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
+        <Canvas>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={1.2} />
           <pointLight position={[-5, -5, 5]} intensity={0.5} />

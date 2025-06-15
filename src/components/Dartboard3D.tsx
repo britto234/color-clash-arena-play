@@ -144,7 +144,7 @@ const Dartboard3D: React.FC<Dartboard3DProps> = ({ onScore, disabled }) => {
   return (
     <div className="flex flex-col items-center space-y-6">
       <div className="w-96 h-96 rounded-lg overflow-hidden shadow-2xl">
-        <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
+        <Canvas>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
           <pointLight position={[-5, -5, 5]} intensity={0.5} />
