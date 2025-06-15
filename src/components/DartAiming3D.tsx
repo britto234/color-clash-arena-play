@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Cylinder } from '@react-three/drei';
 import { Button } from "@/components/ui/button";
@@ -9,32 +10,32 @@ interface DartAiming3DProps {
   disabled: boolean;
 }
 
+// -------- DartArrow COMPONENT --------
 const DartArrow = ({
   position,
   rotation,
   isThrown,
   target,
-  onArrive
+  onArrive,
 }: {
-  position: { x: number; y: number; z: number },
-  rotation: number,
-  isThrown: boolean,
-  target: { x: number; y: number; z: number },
-  onArrive: () => void
+  position: { x: number; y: number; z: number };
+  rotation: number;
+  isThrown: boolean;
+  target: { x: number; y: number; z: number };
+  onArrive: () => void;
 }) => {
   const groupRef = useRef<THREE.Group>(null);
   const [hasArrived, setHasArrived] = useState(false);
 
-  useFrame((_, delta) => {
+  useFrame(() => {
     if (groupRef.current && isThrown && !hasArrived) {
-      // Move position toward target
+      // Animate towards target
       const cur = groupRef.current.position;
       const tar = new THREE.Vector3(target.x, target.y, target.z);
-      cur.lerp(tar, 0.2);
-      // On arrival
-      if (cur.distanceTo(tar) < 0.06 && !hasArrived) {
+      cur.lerp(tar, 0.17);
+      if (cur.distanceTo(tar) < 0.05 && !hasArrived) {
         setHasArrived(true);
-        onArrive();
+        if (onArrive) onArrive();
       }
     }
   });
@@ -46,11 +47,11 @@ const DartArrow = ({
       rotation={[Math.PI / 2, 0, rotation]}
     >
       {/* Tip */}
-      <Cylinder args={[0.02, 0.05, 0.3]} position={[0, 0, 0.15]}>
+      <Cylinder args={[0.02, 0.05, 0.3, 12]} position={[0, 0, 0.15]}>
         <meshStandardMaterial color="#C0C0C0" />
       </Cylinder>
       {/* Shaft */}
-      <Cylinder args={[0.05, 0.05, 0.8]} position={[0, 0, -0.4]}>
+      <Cylinder args={[0.05, 0.05, 0.8, 12]} position={[0, 0, -0.4]}>
         <meshStandardMaterial color="#8B4513" />
       </Cylinder>
       {/* Flights */}
@@ -66,86 +67,89 @@ const DartArrow = ({
   );
 };
 
-const DartboardMesh3D = () => (
-  <group>
-    {/* Main dartboard base */}
-    <Cylinder args={[4, 4, 0.2, 32]} position={[0, 0, 0]}>
-      <meshStandardMaterial color="#8B4513" />
-    </Cylinder>
+// -------- DartboardMesh3D --------
+const DartboardMesh3D = () => {
+  return (
+    <group>
+      {/* Main dartboard base */}
+      <Cylinder args={[4, 4, 0.2, 32]} position={[0, 0, 0]}>
+        <meshStandardMaterial color="#8B4513" />
+      </Cylinder>
+      {/* Dartboard face */}
+      <Cylinder args={[3.8, 3.8, 0.05, 32]} position={[0, 0, 0.1]}>
+        <meshStandardMaterial color="#2C1810" />
+      </Cylinder>
 
-    {/* Dartboard face */}
-    <Cylinder args={[3.8, 3.8, 0.05, 32]} position={[0, 0, 0.1]}>
-      <meshStandardMaterial color="#2C1810" />
-    </Cylinder>
+      {/* Segments and scoring rings */}
+      {Array.from({ length: 20 }, (_, i) => {
+        const angle = (i * Math.PI * 2) / 20;
+        const isRed = i % 2 === 0;
+        return (
+          <group key={i}>
+            {/* Outer segments */}
+            <mesh position={[Math.cos(angle) * 3, Math.sin(angle) * 3, 0.12]} rotation={[0, 0, angle]}>
+              <planeGeometry args={[0.6, 1.5]} />
+              <meshStandardMaterial color={isRed ? "#DC143C" : "#000000"} />
+            </mesh>
 
-    {/* Scoring rings and segments */}
-    {Array.from({ length: 20 }, (_, i) => {
-      const angle = (i * Math.PI * 2) / 20;
-      const isRed = i % 2 === 0;
-      return (
-        <group key={i}>
-          {/* Outer segments */}
-          <mesh position={[Math.cos(angle) * 3, Math.sin(angle) * 3, 0.12]} rotation={[0, 0, angle]}>
-            <planeGeometry args={[0.6, 1.5]} />
-            <meshStandardMaterial color={isRed ? "#DC143C" : "#000000"} />
-          </mesh>
-          
-          {/* Double ring */}
-          <mesh position={[Math.cos(angle) * 2.8, Math.sin(angle) * 2.8, 0.13]} rotation={[0, 0, angle]}>
-            <planeGeometry args={[0.3, 1.2]} />
-            <meshStandardMaterial color="#FFD700" />
-          </mesh>
+            {/* Double ring */}
+            <mesh position={[Math.cos(angle) * 2.8, Math.sin(angle) * 2.8, 0.13]} rotation={[0, 0, angle]}>
+              <planeGeometry args={[0.3, 1.2]} />
+              <meshStandardMaterial color="#FFD700" />
+            </mesh>
 
-          {/* Triple ring */}
-          <mesh position={[Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0.13]} rotation={[0, 0, angle]}>
-            <planeGeometry args={[0.3, 1.2]} />
-            <meshStandardMaterial color="#32CD32" />
-          </mesh>
+            {/* Triple ring */}
+            <mesh position={[Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0.13]} rotation={[0, 0, angle]}>
+              <planeGeometry args={[0.3, 1.2]} />
+              <meshStandardMaterial color="#32CD32" />
+            </mesh>
 
-          {/* Numbers */}
-          <Text
-            position={[Math.cos(angle) * 3.5, Math.sin(angle) * 3.5, 0.15]}
-            fontSize={0.3}
-            color="white"
-            anchorX="center"
-            anchorY="middle"
-          >
-            {[20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5][i]}
-          </Text>
-        </group>
-      );
-    })}
+            {/* Numbers */}
+            <Text
+              position={[Math.cos(angle) * 3.5, Math.sin(angle) * 3.5, 0.15]}
+              fontSize={0.3}
+              color="white"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {[20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5][i]}
+            </Text>
+          </group>
+        );
+      })}
 
-    {/* Bull rings */}
-    <Cylinder args={[0.8, 0.8, 0.05, 16]} position={[0, 0, 0.14]}>
-      <meshStandardMaterial color="#32CD32" />
-    </Cylinder>
+      {/* Bull rings */}
+      <Cylinder args={[0.8, 0.8, 0.05, 16]} position={[0, 0, 0.14]}>
+        <meshStandardMaterial color="#32CD32" />
+      </Cylinder>
 
-    <Cylinder args={[0.4, 0.4, 0.06, 16]} position={[0, 0, 0.15]}>
-      <meshStandardMaterial color="#DC143C" />
-    </Cylinder>
+      <Cylinder args={[0.4, 0.4, 0.06, 16]} position={[0, 0, 0.15]}>
+        <meshStandardMaterial color="#DC143C" />
+      </Cylinder>
 
-    {/* Bull's eye labels */}
-    <Text position={[0, -0.6, 0.16]} fontSize={0.15} color="white" anchorX="center" anchorY="middle">
-      25
-    </Text>
-    <Text position={[0, 0, 0.16]} fontSize={0.2} color="white" anchorX="center" anchorY="middle">
-      50
-    </Text>
-  </group>
-);
+      {/* Bull's eye labels */}
+      <Text position={[0, -0.6, 0.16]} fontSize={0.15} color="white" anchorX="center" anchorY="middle">
+        25
+      </Text>
+      <Text position={[0, 0, 0.16]} fontSize={0.2} color="white" anchorX="center" anchorY="middle">
+        50
+      </Text>
+    </group>
+  );
+};
 
+// -------- Clamp --------
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
+// -------- MAIN COMPONENT --------
 const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
   const [dragging, setDragging] = useState(false);
   const [dragOrigin, setDragOrigin] = useState<{ x: number; y: number } | null>(null);
   const [pull, setPull] = useState(0); // 0 to 1
-  const [aim, setAim] = useState(0.5); // 0 left, 1 right, 0.5 center
+  const [aim, setAim] = useState(0.5); // 0 (left), 1 (right), 0.5 (center)
   const [dartReleased, setDartReleased] = useState(false);
 
-  // For dart animation (3d board coordinates)
   const [dartProps, setDartProps] = useState({
     position: { x: 0, y: -6, z: 0 },
     rotation: 0,
@@ -153,10 +157,15 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
     target: { x: 0, y: 0, z: 0.5 }
   });
 
-  // Use for touch or mouse
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Mouse/touch handling
+  // Mouse/touch events
+  function getEventPosition(e: any) {
+    if (e.touches && e.touches[0])
+      return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
+  }
+
   const handlePointerDown = (e: React.MouseEvent | React.TouchEvent) => {
     if (disabled || dartReleased) return;
     setDragging(true);
@@ -166,8 +175,6 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
   const handlePointerMove = (e: React.MouseEvent | React.TouchEvent) => {
     if (disabled || !dragging || !dragOrigin) return;
     const { x, y } = getEventPosition(e);
-    // Horizontal movement [-150, +150]px → aim from 0(left) to 1(right)
-    // Vertical movement [0, +200]px (pulling down) → power from 0 to 1
     const dx = x - dragOrigin.x;
     const dy = y - dragOrigin.y;
     setAim(clamp(0.5 + dx / 300, 0, 1));
@@ -178,14 +185,11 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
     if (disabled || !dragging) return;
     setDragging(false);
     setDartReleased(true);
-
-    // BOARD COORDS (map to board percentage 0..100)
-    const horizontal = clamp(aim, 0, 1) * 90 + 5; // 5..95
-    const vertical = (1 - clamp(pull, 0, 1)) * 90 + 5; // 5..95
-    // BOARD PHYSICAL (centered = 0)
+    // Board coords (percentages)
+    const horizontal = clamp(aim, 0, 1) * 90 + 5; // range 5..95
+    const vertical = (1 - clamp(pull, 0, 1)) * 90 + 5; // range 5..95
     const tx = ((horizontal - 50) / 50) * 4;
     const ty = ((50 - vertical) / 50) * 4;
-
     setDartProps({
       position: { x: (aim - 0.5) * 4, y: -6, z: 0 },
       rotation: (aim - 0.5) * 0.6,
@@ -194,16 +198,16 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
     });
   };
 
-  // Call onThrow once the dart has arrived
+  // Call onThrow ONCE when dart arrives
   const handleDartArrive = () => {
-    const horizontal = clamp(aim, 0, 1) * 90 + 5; // 5..95
-    const vertical = (1 - clamp(pull, 0, 1)) * 90 + 5; // 5..95
+    const horizontal = clamp(aim, 0, 1) * 90 + 5;
+    const vertical = (1 - clamp(pull, 0, 1)) * 90 + 5;
     setTimeout(() => {
       onThrow(horizontal, vertical);
     }, 400);
   };
 
-  // Reset allow new throw if needed (optionally could show a button)
+  // Reset dart for new throws
   useEffect(() => {
     if (!dartReleased && !dragging) {
       setPull(0);
@@ -216,13 +220,6 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
       });
     }
   }, [dartReleased, dragging]);
-
-  // For mobile/touch and mouse
-  function getEventPosition(e: any) {
-    if (e.touches && e.touches[0])
-      return { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    return { x: e.clientX, y: e.clientY };
-  }
 
   // Overlay event binding
   useEffect(() => {
@@ -254,7 +251,6 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
           <directionalLight position={[5, 5, 5]} intensity={1.2} />
           <pointLight position={[-5, -5, 5]} intensity={0.5} />
           <DartboardMesh3D />
-          {/* Dart */}
           <DartArrow
             position={dartProps.position}
             rotation={dartProps.rotation}
@@ -264,7 +260,6 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
           />
           <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
         </Canvas>
-        {/* AIM overlay (handle all events!) */}
         {!dartReleased && (
           <div
             ref={overlayRef}
@@ -278,7 +273,6 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
           />
         )}
       </div>
-      {/* Aim UI */}
       <div className="text-center space-y-2">
         {!dartReleased ? (
           <>
@@ -301,8 +295,6 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
           <p className="text-green-400 font-bold">Dart thrown! 🎯</p>
         )}
       </div>
-      {/* Optional: Reset for next throw (if needed) */}
-      {/* ... */}
     </div>
   );
 };
