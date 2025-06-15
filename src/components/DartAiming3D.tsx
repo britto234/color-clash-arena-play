@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Cylinder } from '@react-three/drei';
@@ -39,7 +38,7 @@ const DartArrow = ({
     }
   });
 
-  // All props are explicitly set. Never pass onArrive or custom props to mesh/geometry/material
+  // All primitive props set explicitly, never pass custom props to primitives.
   return (
     <group
       ref={groupRef}
@@ -54,14 +53,14 @@ const DartArrow = ({
       <Cylinder args={[0.05, 0.05, 0.8, 12]} position={[0, 0, -0.4]}>
         <meshStandardMaterial color="#8B4513" attach="material" />
       </Cylinder>
-      {/* Flights: vertical and horizontal */}
+      {/* Flights */}
       <mesh position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[0.3, 0.4]} attach="geometry" />
-        <meshStandardMaterial color="#FF0000" attach="material" side={THREE.DoubleSide} />
+        <planeGeometry args={[0.3, 0.4]} />
+        <meshStandardMaterial color="#FF0000" side={THREE.DoubleSide} />
       </mesh>
       <mesh position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, Math.PI / 2]}>
-        <planeGeometry args={[0.3, 0.4]} attach="geometry" />
-        <meshStandardMaterial color="#FF0000" attach="material" side={THREE.DoubleSide} />
+        <planeGeometry args={[0.3, 0.4]} />
+        <meshStandardMaterial color="#FF0000" side={THREE.DoubleSide} />
       </mesh>
     </group>
   );
@@ -87,18 +86,18 @@ const DartboardMesh3D = () => {
           <group key={i}>
             {/* Outer segments */}
             <mesh position={[Math.cos(angle) * 3, Math.sin(angle) * 3, 0.12]} rotation={[0, 0, angle]}>
-              <planeGeometry args={[0.6, 1.5]} attach="geometry" />
-              <meshStandardMaterial color={isRed ? "#DC143C" : "#000000"} attach="material" />
+              <planeGeometry args={[0.6, 1.5]} />
+              <meshStandardMaterial color={isRed ? "#DC143C" : "#000000"} />
             </mesh>
             {/* Double ring */}
             <mesh position={[Math.cos(angle) * 2.8, Math.sin(angle) * 2.8, 0.13]} rotation={[0, 0, angle]}>
-              <planeGeometry args={[0.3, 1.2]} attach="geometry" />
-              <meshStandardMaterial color="#FFD700" attach="material" />
+              <planeGeometry args={[0.3, 1.2]} />
+              <meshStandardMaterial color="#FFD700" />
             </mesh>
             {/* Triple ring */}
             <mesh position={[Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0.13]} rotation={[0, 0, angle]}>
-              <planeGeometry args={[0.3, 1.2]} attach="geometry" />
-              <meshStandardMaterial color="#32CD32" attach="material" />
+              <planeGeometry args={[0.3, 1.2]} />
+              <meshStandardMaterial color="#32CD32" />
             </mesh>
             {/* Numbers */}
             <Text
@@ -293,4 +292,3 @@ const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
 };
 
 export default DartAiming3D;
-
