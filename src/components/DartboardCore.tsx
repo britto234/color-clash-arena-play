@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Text, Cylinder } from '@react-three/drei';
+import { Text, Cylinder, Plane } from '@react-three/drei';
 import * as THREE from 'three';
 
 const DartboardCore = () => {
@@ -24,22 +23,19 @@ const DartboardCore = () => {
         return (
           <group key={i}>
             {/* Outer segments */}
-            <mesh position={[Math.cos(angle) * 3, Math.sin(angle) * 3, 0.12]} rotation={[0, 0, angle]}>
-              <planeGeometry args={[0.6, 1.5]} />
+            <Plane args={[0.6, 1.5]} position={[Math.cos(angle) * 3, Math.sin(angle) * 3, 0.12]} rotation={[0, 0, angle]}>
               <meshStandardMaterial color={isRed ? "#DC143C" : "#000000"} />
-            </mesh>
+            </Plane>
             
             {/* Double ring */}
-            <mesh position={[Math.cos(angle) * 2.8, Math.sin(angle) * 2.8, 0.13]} rotation={[0, 0, angle]}>
-              <planeGeometry args={[0.3, 1.2]} />
+            <Plane args={[0.3, 1.2]} position={[Math.cos(angle) * 2.8, Math.sin(angle) * 2.8, 0.13]} rotation={[0, 0, angle]}>
               <meshStandardMaterial color="#FFD700" />
-            </mesh>
+            </Plane>
 
             {/* Triple ring */}
-            <mesh position={[Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0.13]} rotation={[0, 0, angle]}>
-              <planeGeometry args={[0.3, 1.2]} />
+            <Plane args={[0.3, 1.2]} position={[Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0.13]} rotation={[0, 0, angle]}>
               <meshStandardMaterial color="#32CD32" />
-            </mesh>
+            </Plane>
 
             {/* Numbers */}
             <group position={[Math.cos(angle) * 3.5, Math.sin(angle) * 3.5, 0.15]}>

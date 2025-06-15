@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Cylinder } from '@react-three/drei';
+import { OrbitControls, Text, Cylinder, Plane } from '@react-three/drei';
 import * as THREE from 'three';
 import DartboardCore from './DartboardCore';
 
@@ -54,14 +54,12 @@ const DartArrow = ({
         <meshStandardMaterial color="#8B4513" />
       </Cylinder>
       {/* Flights */}
-      <mesh position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[0.3, 0.4]} />
+      <Plane args={[0.3, 0.4]} position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, 0]}>
         <meshStandardMaterial color="#FF0000" side={THREE.DoubleSide} />
-      </mesh>
-      <mesh position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, Math.PI / 2]}>
-        <planeGeometry args={[0.3, 0.4]} />
+      </Plane>
+      <Plane args={[0.3, 0.4]} position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, Math.PI / 2]}>
         <meshStandardMaterial color="#FF0000" side={THREE.DoubleSide} />
-      </mesh>
+      </Plane>
     </group>
   );
 };
