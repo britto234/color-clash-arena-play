@@ -1,6 +1,7 @@
+
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Cylinder, Sphere } from '@react-three/drei';
+import { OrbitControls, Text, Cylinder } from '@react-three/drei';
 import * as THREE from 'three';
 import DartAiming3D from './DartAiming3D';
 
@@ -63,7 +64,7 @@ const DartboardMesh = () => {
                 anchorX="center"
                 anchorY="middle"
               >
-                {[20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5][i]}
+                {[20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5][i].toString()}
               </Text>
             </group>
           </group>
