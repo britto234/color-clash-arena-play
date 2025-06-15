@@ -35,6 +35,8 @@ const DartboardMesh = () => {
       {Array.from({ length: 20 }, (_, i) => {
         const angle = (i * Math.PI * 2) / 20;
         const isRed = i % 2 === 0;
+        const numberPosition = [Math.cos(angle) * 3.5, Math.sin(angle) * 3.5, 0.15];
+
         return (
           <group key={i}>
             {/* Outer segments */}
@@ -55,17 +57,17 @@ const DartboardMesh = () => {
               <meshStandardMaterial color="#32CD32" />
             </mesh>
 
-            {/* Numbers */}
-            <Text
-              position={[Math.cos(angle) * 3.5, Math.sin(angle) * 3.5, 0.15]}
-              rotation={[0, 0, 0]}
-              fontSize={0.3}
-              color="white"
-              anchorX="center"
-              anchorY="middle"
-            >
-              {[20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5][i]}
-            </Text>
+            {/* Numbers - wrap Text in a group for rotation if needed */}
+            <group position={numberPosition} rotation={[0, 0, 0]}>
+              <Text
+                fontSize={0.3}
+                color="white"
+                anchorX="center"
+                anchorY="middle"
+              >
+                {[20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5][i]}
+              </Text>
+            </group>
           </group>
         );
       })}
@@ -80,25 +82,26 @@ const DartboardMesh = () => {
       </Cylinder>
 
       {/* Bull's eye text */}
-      <Text
-        position={[0, -0.6, 0.16]}
-        fontSize={0.15}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-      >
-        25
-      </Text>
-
-      <Text
-        position={[0, 0, 0.16]}
-        fontSize={0.2}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-      >
-        50
-      </Text>
+      <group position={[0, -0.6, 0.16]}>
+        <Text
+          fontSize={0.15}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+        >
+          25
+        </Text>
+      </group>
+      <group position={[0, 0, 0.16]}>
+        <Text
+          fontSize={0.2}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+        >
+          50
+        </Text>
+      </group>
     </group>
   );
 };
@@ -172,3 +175,4 @@ const Dartboard3D: React.FC<Dartboard3DProps> = ({ onScore, disabled }) => {
 };
 
 export default Dartboard3D;
+
