@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Cylinder } from '@react-three/drei';
@@ -39,8 +38,7 @@ const DartArrow = ({
     }
   });
 
-  // Make sure only allowed props are passed to Three.js components!
-  // Defensive checks: all props are literal, no spreads.
+  // Only pass Three.js-approved props to primitives
   return (
     <group
       ref={groupRef}
@@ -297,4 +295,3 @@ const DartAiming3D: React.FC<{
 };
 
 export default DartAiming3D;
-
