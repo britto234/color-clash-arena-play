@@ -38,7 +38,7 @@ const DartArrow = ({
     }
   });
 
-  // All primitive props set explicitly, never pass custom props to primitives.
+  // Only standard props passed to primitives!
   return (
     <group
       ref={groupRef}
@@ -47,11 +47,11 @@ const DartArrow = ({
     >
       {/* Tip */}
       <Cylinder args={[0.02, 0.05, 0.3, 12]} position={[0, 0, 0.15]}>
-        <meshStandardMaterial color="#C0C0C0" attach="material" />
+        <meshStandardMaterial color="#C0C0C0" />
       </Cylinder>
       {/* Shaft */}
       <Cylinder args={[0.05, 0.05, 0.8, 12]} position={[0, 0, -0.4]}>
-        <meshStandardMaterial color="#8B4513" attach="material" />
+        <meshStandardMaterial color="#8B4513" />
       </Cylinder>
       {/* Flights */}
       <mesh position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, 0]}>
@@ -72,11 +72,11 @@ const DartboardMesh3D = () => {
     <group>
       {/* Main dartboard base */}
       <Cylinder args={[4, 4, 0.2, 32]} position={[0, 0, 0]}>
-        <meshStandardMaterial color="#8B4513" attach="material" />
+        <meshStandardMaterial color="#8B4513" />
       </Cylinder>
       {/* Dartboard face */}
       <Cylinder args={[3.8, 3.8, 0.05, 32]} position={[0, 0, 0.1]}>
-        <meshStandardMaterial color="#2C1810" attach="material" />
+        <meshStandardMaterial color="#2C1810" />
       </Cylinder>
       {/* Segments and scoring rings */}
       {Array.from({ length: 20 }, (_, i) => {
@@ -114,10 +114,10 @@ const DartboardMesh3D = () => {
       })}
       {/* Bull rings */}
       <Cylinder args={[0.8, 0.8, 0.05, 16]} position={[0, 0, 0.14]}>
-        <meshStandardMaterial color="#32CD32" attach="material" />
+        <meshStandardMaterial color="#32CD32" />
       </Cylinder>
       <Cylinder args={[0.4, 0.4, 0.06, 16]} position={[0, 0, 0.15]}>
-        <meshStandardMaterial color="#DC143C" attach="material" />
+        <meshStandardMaterial color="#DC143C" />
       </Cylinder>
       {/* Bull's eye labels */}
       <Text position={[0, -0.6, 0.16]} fontSize={0.15} color="white" anchorX="center" anchorY="middle">
