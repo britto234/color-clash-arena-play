@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Cylinder, Sphere } from '@react-three/drei';
@@ -35,7 +34,6 @@ const DartboardMesh = () => {
       {Array.from({ length: 20 }, (_, i) => {
         const angle = (i * Math.PI * 2) / 20;
         const isRed = i % 2 === 0;
-        const numberPosition = [Math.cos(angle) * 3.5, Math.sin(angle) * 3.5, 0.15];
 
         return (
           <group key={i}>
@@ -58,7 +56,7 @@ const DartboardMesh = () => {
             </mesh>
 
             {/* Numbers - wrap Text in a group for rotation if needed */}
-            <group position={numberPosition} rotation={[0, 0, 0]}>
+            <group position={[Math.cos(angle) * 3.5, Math.sin(angle) * 3.5, 0.15]} rotation={[0, 0, 0]}>
               <Text
                 fontSize={0.3}
                 color="white"
@@ -175,4 +173,3 @@ const Dartboard3D: React.FC<Dartboard3DProps> = ({ onScore, disabled }) => {
 };
 
 export default Dartboard3D;
-
