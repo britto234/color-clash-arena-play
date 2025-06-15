@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Cylinder } from '@react-three/drei';
@@ -38,7 +39,7 @@ const DartArrow = ({
     }
   });
 
-  // Only pass Three.js-approved props to primitives
+  // All props are explicitly set. Never pass onArrive or custom props to mesh/geometry/material
   return (
     <group
       ref={groupRef}
@@ -47,20 +48,20 @@ const DartArrow = ({
     >
       {/* Tip */}
       <Cylinder args={[0.02, 0.05, 0.3, 12]} position={[0, 0, 0.15]}>
-        <meshStandardMaterial attach="material" color="#C0C0C0" />
+        <meshStandardMaterial color="#C0C0C0" attach="material" />
       </Cylinder>
       {/* Shaft */}
       <Cylinder args={[0.05, 0.05, 0.8, 12]} position={[0, 0, -0.4]}>
-        <meshStandardMaterial attach="material" color="#8B4513" />
+        <meshStandardMaterial color="#8B4513" attach="material" />
       </Cylinder>
       {/* Flights: vertical and horizontal */}
       <mesh position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[0.3, 0.4]} />
-        <meshStandardMaterial attach="material" color="#FF0000" side={THREE.DoubleSide} />
+        <planeGeometry args={[0.3, 0.4]} attach="geometry" />
+        <meshStandardMaterial color="#FF0000" attach="material" side={THREE.DoubleSide} />
       </mesh>
       <mesh position={[0, 0, -0.8]} rotation={[Math.PI / 2, 0, Math.PI / 2]}>
-        <planeGeometry args={[0.3, 0.4]} />
-        <meshStandardMaterial attach="material" color="#FF0000" side={THREE.DoubleSide} />
+        <planeGeometry args={[0.3, 0.4]} attach="geometry" />
+        <meshStandardMaterial color="#FF0000" attach="material" side={THREE.DoubleSide} />
       </mesh>
     </group>
   );
@@ -72,11 +73,11 @@ const DartboardMesh3D = () => {
     <group>
       {/* Main dartboard base */}
       <Cylinder args={[4, 4, 0.2, 32]} position={[0, 0, 0]}>
-        <meshStandardMaterial attach="material" color="#8B4513" />
+        <meshStandardMaterial color="#8B4513" attach="material" />
       </Cylinder>
       {/* Dartboard face */}
       <Cylinder args={[3.8, 3.8, 0.05, 32]} position={[0, 0, 0.1]}>
-        <meshStandardMaterial attach="material" color="#2C1810" />
+        <meshStandardMaterial color="#2C1810" attach="material" />
       </Cylinder>
       {/* Segments and scoring rings */}
       {Array.from({ length: 20 }, (_, i) => {
@@ -86,18 +87,18 @@ const DartboardMesh3D = () => {
           <group key={i}>
             {/* Outer segments */}
             <mesh position={[Math.cos(angle) * 3, Math.sin(angle) * 3, 0.12]} rotation={[0, 0, angle]}>
-              <planeGeometry args={[0.6, 1.5]} />
-              <meshStandardMaterial attach="material" color={isRed ? "#DC143C" : "#000000"} />
+              <planeGeometry args={[0.6, 1.5]} attach="geometry" />
+              <meshStandardMaterial color={isRed ? "#DC143C" : "#000000"} attach="material" />
             </mesh>
             {/* Double ring */}
             <mesh position={[Math.cos(angle) * 2.8, Math.sin(angle) * 2.8, 0.13]} rotation={[0, 0, angle]}>
-              <planeGeometry args={[0.3, 1.2]} />
-              <meshStandardMaterial attach="material" color="#FFD700" />
+              <planeGeometry args={[0.3, 1.2]} attach="geometry" />
+              <meshStandardMaterial color="#FFD700" attach="material" />
             </mesh>
             {/* Triple ring */}
             <mesh position={[Math.cos(angle) * 1.8, Math.sin(angle) * 1.8, 0.13]} rotation={[0, 0, angle]}>
-              <planeGeometry args={[0.3, 1.2]} />
-              <meshStandardMaterial attach="material" color="#32CD32" />
+              <planeGeometry args={[0.3, 1.2]} attach="geometry" />
+              <meshStandardMaterial color="#32CD32" attach="material" />
             </mesh>
             {/* Numbers */}
             <Text
@@ -114,10 +115,10 @@ const DartboardMesh3D = () => {
       })}
       {/* Bull rings */}
       <Cylinder args={[0.8, 0.8, 0.05, 16]} position={[0, 0, 0.14]}>
-        <meshStandardMaterial attach="material" color="#32CD32" />
+        <meshStandardMaterial color="#32CD32" attach="material" />
       </Cylinder>
       <Cylinder args={[0.4, 0.4, 0.06, 16]} position={[0, 0, 0.15]}>
-        <meshStandardMaterial attach="material" color="#DC143C" />
+        <meshStandardMaterial color="#DC143C" attach="material" />
       </Cylinder>
       {/* Bull's eye labels */}
       <Text position={[0, -0.6, 0.16]} fontSize={0.15} color="white" anchorX="center" anchorY="middle">
@@ -135,10 +136,7 @@ const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
 // -------- MAIN COMPONENT --------
-const DartAiming3D: React.FC<{
-  onThrow: (horizontalPosition: number, verticalPosition: number) => void;
-  disabled: boolean;
-}> = ({ onThrow, disabled }) => {
+const DartAiming3D: React.FC<DartAiming3DProps> = ({ onThrow, disabled }) => {
   const [dragging, setDragging] = useState(false);
   const [dragOrigin, setDragOrigin] = useState<{ x: number; y: number } | null>(null);
   const [pull, setPull] = useState(0); // 0 to 1
@@ -295,3 +293,4 @@ const DartAiming3D: React.FC<{
 };
 
 export default DartAiming3D;
+
