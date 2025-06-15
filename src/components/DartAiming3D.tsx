@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Cylinder } from '@react-three/drei';
@@ -29,7 +28,6 @@ const DartArrow = ({
 
   useFrame(() => {
     if (groupRef.current && isThrown && !hasArrived) {
-      // Animate towards target
       const cur = groupRef.current.position;
       const tar = new THREE.Vector3(target.x, target.y, target.z);
       cur.lerp(tar, 0.17);
@@ -40,6 +38,7 @@ const DartArrow = ({
     }
   });
 
+  // Make sure NO {...props} is spread onto mesh/geometries/materials!
   return (
     <group
       ref={groupRef}
