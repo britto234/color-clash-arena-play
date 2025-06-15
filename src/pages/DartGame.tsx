@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, Star, Medal, Award } from 'lucide-react';
-import Dartboard from '../components/Dartboard';
+import Dartboard3D from '../components/Dartboard3D';
 import Scoreboard from '../components/Scoreboard';
 import PlayerSetup from '../components/PlayerSetup';
 import WinnerModal from '../components/WinnerModal';
@@ -110,7 +110,7 @@ const DartGame = () => {
                 <CardTitle className="text-white text-center">Dartboard</CardTitle>
               </CardHeader>
               <CardContent className="flex justify-center">
-                <Dartboard onScore={handleScore} disabled={gameEnded} />
+                <Dartboard3D onScore={handleScore} disabled={gameEnded} />
               </CardContent>
             </Card>
           </div>
